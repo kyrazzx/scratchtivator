@@ -51,13 +51,16 @@ def progress_bar(current, total, last_checked_account="", bar_length=40):
     percent = int(current / total * 100)
     bar = ('█' * int(bar_length * percent / 100)).ljust(bar_length)
     if last_checked_account:
-        print(Fore.LIGHTRED_EX + f"[{bar}] {percent}% Complete - Last checked account: {last_checked_account}", end="\r")
+        print(Fore.LIGHTRED_EX + f"[{bar}] {percent}% Complete - Last activated account: {last_checked_account}", end="\r")
     else:
         print(Fore.LIGHTRED_EX + f"[{bar}] {percent}% Complete", end="\r")
 
 def activate_scratch_account(username, password):
     chrome_options = Options()
-    chrome_options.add_experimental_option('excludeSwitches', ['enable-logging']) # disable chrome logs
+    chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
     driver = webdriver.Chrome(options=chrome_options)
     driver.get("https://scratch.mit.edu/login/")
     username_input = driver.find_element(By.ID, "id_username")
